@@ -1,23 +1,22 @@
-import { useState } from "react"
+import React from "react";
+import { useState } from "react";
 import { UserProps } from "../types/user";
 
 // imports components 
-import Search from "../components/Search"
-import User from "../components/User"
+import Search from "../components/Search";
+import User from "../components/User";
 import Error from "../components/Error";
-
+import Footer from "../components/Footer";
 
 const Home = () => {
     const [user, setUser] = useState<UserProps | null>(null);
     const [error, setError] = useState(false);
 
     const loadUser = async (userName: string) => {
+        setError(false);
+        setUser(null);
 
-        setError(false); // zerando error se procurar outro user após o error
-        setUser(null); // zerando user 
-
-        const res = await fetch(`https://api.github.com/users/${userName}`)
-
+        const res = await fetch(`https://api.github.com/users/${userName}`);
         const data = await res.json();
 
         if (res.status === 404) {
@@ -25,7 +24,7 @@ const Home = () => {
             return;
         }
 
-        const { avatar_url, login, location, followers, following } = data  //destructing de objeto do type vindo dos dados
+        const { avatar_url, login, location, followers, following } = data;
 
         const userData: UserProps = {
             avatar_url,
@@ -35,7 +34,7 @@ const Home = () => {
             following
         };
 
-        setUser(userData)
+        setUser(userData);
     };
 
     return (
@@ -43,9 +42,9 @@ const Home = () => {
             <Search loadUser={loadUser} />
             {user && <User {...user} />}
             {error && <Error />}
-
+            <Footer />
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;
