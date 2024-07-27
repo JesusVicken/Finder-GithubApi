@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useState } from "react";
 import { UserProps } from "../types/user";
 
